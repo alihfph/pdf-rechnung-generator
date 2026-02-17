@@ -79,19 +79,26 @@ export default function Order() {
   };
 
   if (!isBackendConfigured) {
+    const isProduction = typeof window !== 'undefined' && !window.location.hostname.match(/^localhost$|^127\./);
     return (
       <div className="order-page">
         <div className="order-msg order-msg-setup">
           <p><strong>Backend not configured</strong></p>
-          <p>To order food, run the backend and set the API URL:</p>
-          <ol>
-            <li>In the project root, create a file <code>.env</code> (or edit it) and add:<br />
-              <code>VITE_API_URL=http://localhost:3001</code>
-            </li>
-            <li>Start the backend: <code>cd backend && npm run start:dev</code></li>
-            <li>Restart the frontend dev server (e.g. <code>npm run dev</code>) so it picks up <code>.env</code>.</li>
-          </ol>
-          <p>Then reload this page. Login/Register will appear in the top bar.</p>
+          {isProduction ? (
+            <>
+              <p>Ordering is not available on this deployment because no API URL is set.</p>
+              <p>To enable it: deploy the backend (e.g. Railway or Render), then in Vercel → Project → Settings → Environment Variables add <code>VITE_API_URL</code> = your backend URL, and redeploy.</p>
+            </>
+          ) : (
+            <>
+              <p>To order food locally:</p>
+              <ol>
+                <li>In the project root, create <code>.env</code> with <code>VITE_API_URL=http://localhost:3001</code></li>
+                <li>Start the backend: <code>cd backend && npm run start:dev</code></li>
+                <li>Restart the frontend (<code>npm run dev</code>) and reload this page.</li>
+              </ol>
+            </>
+          )}
         </div>
         <Link to="/">Home</Link>
       </div>
