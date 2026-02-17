@@ -1,117 +1,184 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './DaawatRestaurant.css';
 
 const DAAWAT_URL = 'https://www.daawat-restaurant.de/';
 
-export default function DaawatRestaurant() {
+const HERO_SLIDES = [
+  'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1920&q=80',
+  'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=1920&q=80',
+  'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80',
+  'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=1920&q=80',
+];
+
+const CHAR_DELAY_MS = 35;
+const AUTHOR_DELAY_MS = 400;
+
+function WhatsAppReview({ paragraphs, author }) {
+  const fullText = paragraphs.join('\n\n');
+  const [displayedLength, setDisplayedLength] = useState(0);
+  const [showAuthor, setShowAuthor] = useState(false);
+
+  useEffect(() => {
+    if (displayedLength >= fullText.length) {
+      const t = setTimeout(() => setShowAuthor(true), AUTHOR_DELAY_MS);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setDisplayedLength((n) => n + 1), CHAR_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [displayedLength, fullText.length]);
+
+  const visibleText = fullText.slice(0, displayedLength);
+  const showCaret = displayedLength < fullText.length;
+
   return (
-    <div className="daawat">
+    <div className="daawat-wa">
+      <div className="daawat-wa-bubble">
+        <p className="daawat-wa-text">
+          {visibleText}
+          {showCaret && <span className="daawat-wa-caret" />}
+        </p>
+        {showAuthor && (
+          <cite className="daawat-wa-author">— {author}</cite>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function DaawatRestaurant() {
+  const scrollToTop = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="daawat" id="top">
       <nav className="daawat-nav">
         <div className="daawat-nav-inner">
           <Link to="/" className="daawat-logo">DAAWAT</Link>
           <ul className="daawat-nav-links">
             <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Menü</a></li>
-            <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Essen Lieferservice</a></li>
+            <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Lieferservice</a></li>
             <li><a href="#angebote">Angebote</a></li>
+            <li><a href="#oeffnungszeiten">Öffnungszeiten</a></li>
             <li><a href="#kontakt">Kontakt</a></li>
-            <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Tischreservierung</a></li>
-            <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Menü & Bestellen</a></li>
+            <li><a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Reservierung</a></li>
           </ul>
         </div>
       </nav>
 
       <header className="daawat-hero">
-        <h1>DAAWAT – Indisches und Tandoori Grillspezialitäten Restaurant</h1>
-        <p className="daawat-tagline">Indisches, Tandoori & Curry Essen München</p>
-        <p className="daawat-sub">Wir bieten Abholung und Lieferung an</p>
-        <div className="daawat-hero-btns">
-          <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer" className="daawat-btn daawat-btn-primary">Tischreservierung</a>
-          <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer" className="daawat-btn daawat-btn-secondary">Menü & Bestellen</a>
+        <div className="daawat-hero-bg" aria-hidden="true">
+          {HERO_SLIDES.map((src, i) => (
+            <div
+              key={i}
+              className="daawat-hero-bg-slide"
+              style={{ backgroundImage: `url(${src})` }}
+            />
+          ))}
+        </div>
+        <div className="daawat-hero-inner">
+          <p className="daawat-hero-label">Indisches & Tandoori Restaurant</p>
+          <h1 className="daawat-hero-title">DAAWAT</h1>
+          <p className="daawat-hero-tagline">Authentische Curries & Grillspezialitäten in München</p>
+          <p className="daawat-hero-sub">Abholung · Lieferung · Tischreservierung</p>
+          <div className="daawat-hero-btns">
+            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer" className="daawat-btn daawat-btn-primary">Tisch reservieren</a>
+            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer" className="daawat-btn daawat-btn-secondary">Menü & Bestellen</a>
+          </div>
+        </div>
+        <div className="daawat-hero-scroll" aria-hidden="true">
+          <span className="daawat-hero-scroll-line" />
         </div>
       </header>
 
       <main className="daawat-main">
-        <section id="angebote" className="daawat-section">
-          <h2>Angebote</h2>
-          <div className="daawat-offer">
-            <span className="daawat-offer-badge">15 % Rabatt auf Bestellung</span>
-          </div>
+        <section id="angebote" className="daawat-section daawat-section--highlight">
+          <span className="daawat-section-label">Angebot</span>
+          <h2 className="daawat-section-title">15 % Rabatt auf Ihre Bestellung</h2>
+          <p className="daawat-section-desc">Gültig für Abholung und Lieferung – einfach beim Bestellen angeben.</p>
+          <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer" className="daawat-btn daawat-btn-primary daawat-section-cta">Jetzt bestellen</a>
         </section>
 
         <section className="daawat-section">
-          <h2>Essen Gerichte</h2>
-          <p>Entdecken Sie unsere indischen und Tandoori Grillspezialitäten – von klassischen Curries bis zu frisch aus dem Tandoor.</p>
+          <span className="daawat-section-label">Küche</span>
+          <h2 className="daawat-section-title">Essen & Gerichte</h2>
+          <WhatsAppReview
+            paragraphs={[
+              'Von klassischen Curries bis frisch aus dem Tandoor – hier gibt es echte indische und Tandoori-Grillspezialitäten. Wir kommen immer wieder, die Qualität stimmt einfach.',
+            ]}
+            author="Maria K., München"
+          />
         </section>
 
         <section className="daawat-section">
-          <h2>Restaurant</h2>
-          <p>Genießen Sie drinnen oder draußen – wir freuen uns auf Ihren Besuch.</p>
-        </section>
-
-        <section className="daawat-section" id="ueber">
-          <h2>Über DAAWAT – Indisches und Tandoori Grillspezialitäten Restaurant</h2>
-          <p>
-            Wir von DAAWAT bieten Gerichte von hervorragender Qualität und laden Sie herzlich ein, unsere köstliche Küche kennenzulernen.
-          </p>
-          <p>
-            Der Schlüssel zu unserem Erfolg ist einfach: Wir bieten hochwertige Gerichte, die stets den Gaumen erfreuen. Wir sind stolz darauf, unseren Kunden schmackhafte und authentische Gerichte zu servieren.
-          </p>
-          <p>
-            Genießen Sie wahre Gaumenfreuden. Wählen Sie dazu ein Getränk aus. Und vor allem: Entspannen Sie sich! Wir bedanken uns herzlich bei Ihnen für Ihre fortwährende Unterstützung.
-          </p>
+          <span className="daawat-section-label">Besuch</span>
+          <h2 className="daawat-section-title">Restaurant</h2>
+          <WhatsAppReview
+            paragraphs={[
+              'Ob drinnen oder draußen – immer ein schöner Abend in der Belgradstraße. Freundlicher Service und angenehme Atmosphäre. Sehr empfehlenswert.',
+            ]}
+            author="Thomas & Sandra, Stammgäste"
+          />
         </section>
 
         <section className="daawat-section">
-          <h2>Öffnungszeiten</h2>
+          <span className="daawat-section-label">Über uns</span>
+          <h2 className="daawat-section-title">DAAWAT – Indisches & Tandoori Restaurant</h2>
+          <WhatsAppReview
+            paragraphs={[
+              'Das DAAWAT bietet Gerichte von wirklich hervorragender Qualität. Hochwertige Zutaten und authentische Rezepte – das merkt man bei jedem Bissen. Einfach Gaumenfreuden pur.',
+              'Ein Getränk dazu, entspannt sitzen bleiben – so mag man es. Danke an das Team für die tolle Küche und den Service.',
+            ]}
+            author="Peter L., München"
+          />
+        </section>
+
+        <section id="oeffnungszeiten" className="daawat-section">
+          <span className="daawat-section-label">Zeiten</span>
+          <h2 className="daawat-section-title">Öffnungszeiten</h2>
           <div className="daawat-hours">
-            <div className="daawat-hours-block">
-              <strong>Restaurant</strong>
-              <p>Montag – Samstag: 11:30 – 14:30, 17:30 – 23:00</p>
-              <p>Sonntag: 12:30 – 23:00</p>
+            <div className="daawat-hours-card">
+              <strong className="daawat-hours-name">Restaurant</strong>
+              <p>Mo – Sa: 11:30 – 14:30, 17:30 – 23:00</p>
+              <p>So: 12:30 – 23:00</p>
             </div>
-            <div className="daawat-hours-block">
-              <strong>Abholservice</strong>
-              <p>Montag – Samstag: 11:45 – 14:30, 17:45 – 23:00</p>
-              <p>Sonntag: 12:45 – 23:00</p>
+            <div className="daawat-hours-card">
+              <strong className="daawat-hours-name">Abholservice</strong>
+              <p>Mo – Sa: 11:45 – 14:30, 17:45 – 23:00</p>
+              <p>So: 12:45 – 23:00</p>
             </div>
-            <div className="daawat-hours-block">
-              <strong>Lieferservice</strong>
-              <p>Montag – Samstag: 12:00 – 14:30, 18:00 – 23:00</p>
-              <p>Sonntag: 13:00 – 23:00</p>
+            <div className="daawat-hours-card">
+              <strong className="daawat-hours-name">Lieferservice</strong>
+              <p>Mo – Sa: 12:00 – 14:30, 18:00 – 23:00</p>
+              <p>So: 13:00 – 23:00</p>
             </div>
           </div>
         </section>
 
         <section className="daawat-section">
-          <h2>Essenslieferung in München</h2>
-          <p>
-            Suchst du nach einem Essens-Lieferservice in der Nähe München? Nicht jeder hat die Zeit und die Lust, leckeres Essen zuzubereiten.
+          <span className="daawat-section-label">Lieferung</span>
+          <h2 className="daawat-section-title">Essenslieferung in München</h2>
+          <p className="daawat-section-desc">
+            Sie suchen einen Lieferservice für indisches Essen in München? Bei DAAWAT bestellen Sie einfach „Lieferung“ – 
+            wir liefern Ihnen unsere Gerichte bequem nach Hause.
           </p>
-          <p>
-            Wenn du wie ein König bedient werden möchtest, dann ist der Lieferservice von DAAWAT die beste Wahl. Wähle einfach „Lieferung“ beim Kassen-Bildschirm aus. Wir hoffen, dass du mit unserem Lieferservice zufrieden bist.
-          </p>
-        </section>
-
-        <section className="daawat-section">
-          <h2>Liefergebühr</h2>
-          <div className="daawat-zones">
-            <p><strong>Zone 1–7:</strong> Mindestbestellwert 19,90 €, Gebühr 0,00 €</p>
-            <p><strong>Zone 9, 11:</strong> Mindestbestellwert 49,00 €, Gebühr 0,00 €</p>
-          </div>
         </section>
 
         <section id="kontakt" className="daawat-section daawat-contact">
-          <h2>Kontakt</h2>
+          <span className="daawat-section-label">Kontakt</span>
+          <h2 className="daawat-section-title">So erreichen Sie uns</h2>
           <div className="daawat-contact-grid">
-            <div>
+            <div className="daawat-contact-item">
               <strong>Adresse</strong>
-              <p>Belgradstraße 105<br />80804 München, Germany</p>
+              <p>Belgradstraße 105<br />80804 München</p>
             </div>
-            <div>
+            <div className="daawat-contact-item">
               <strong>Telefon</strong>
               <p><a href="tel:+49893083936">+49 89 3083936</a></p>
             </div>
-            <div>
+            <div className="daawat-contact-item">
               <strong>E-Mail</strong>
               <p><a href="mailto:daawat@web.de">daawat@web.de</a></p>
             </div>
@@ -119,38 +186,62 @@ export default function DaawatRestaurant() {
           <div className="daawat-links">
             <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Menü</a>
             <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Angebote</a>
-            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Tischreservierung</a>
-            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Im Voraus bestellen</a>
-            <a href="#kontakt">Kontakt</a>
+            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Reservierung</a>
+            <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">Bestellen</a>
           </div>
         </section>
 
         <section className="daawat-section daawat-impressum">
-          <h2>Impressum</h2>
-          <p><strong>Daawat Indisches Restaurant</strong></p>
-          <p>JASMIN & PH GmbH</p>
-          <p>Belgradstraße 105</p>
-          <p>80804 München</p>
-          <p>Vertretungsberechtigt: Harpreet Kaur Dhillon</p>
-          <p>Kontakt Telefon: 089 3083936</p>
-          <p>E-Mail: daawat@web.de</p>
-          <p>Registergericht: Amtsgericht München</p>
-          <p>Registernummer: HRB 245968</p>
-          <p>Umsatzsteuer-ID: DE311905425</p>
-          <p className="daawat-impressum-note">
-            Verbraucherstreitbeilegung/Universalschlichtungsstelle: Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
-          </p>
-          <p>Quelle: e-recht24.de</p>
+          <span className="daawat-section-label">Rechtliches</span>
+          <h2 className="daawat-section-title">Impressum</h2>
+          <div className="daawat-impressum-card">
+            <div className="daawat-impressum-header">
+              <span className="daawat-impressum-name">Daawat Indisches Restaurant</span>
+              <span className="daawat-impressum-company">JASMIN & PH GmbH</span>
+            </div>
+            <div className="daawat-impressum-grid">
+              <div className="daawat-impressum-item">
+                <span className="daawat-impressum-label">Adresse</span>
+                <p>Belgradstraße 105<br />80804 München</p>
+              </div>
+              <div className="daawat-impressum-item">
+                <span className="daawat-impressum-label">Kontakt</span>
+                <p>
+                  <a href="tel:+49893083936">089 3083936</a><br />
+                  <a href="mailto:daawat@web.de">daawat@web.de</a>
+                </p>
+              </div>
+              <div className="daawat-impressum-item">
+                <span className="daawat-impressum-label">Vertretung</span>
+                <p>Harpreet Kaur Dhillon</p>
+              </div>
+              <div className="daawat-impressum-item">
+                <span className="daawat-impressum-label">Register</span>
+                <p>Amtsgericht München · HRB 245968</p>
+              </div>
+              <div className="daawat-impressum-item">
+                <span className="daawat-impressum-label">USt-IdNr.</span>
+                <p>DE311905425</p>
+              </div>
+            </div>
+            <div className="daawat-impressum-note">
+              Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+            </div>
+            <p className="daawat-impressum-source">Quelle: e-recht24.de</p>
+          </div>
         </section>
       </main>
 
       <footer className="daawat-footer">
         <div className="daawat-footer-inner">
-          <Link to="/">PDF Rechnung Generator</Link>
-          <span> · </span>
-          <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">www.daawat-restaurant.de</a>
+          <a href="#top" onClick={scrollToTop} className="daawat-footer-top">↑ Nach oben</a>
+          <span className="daawat-footer-dot">·</span>
+          <a href={DAAWAT_URL} target="_blank" rel="noopener noreferrer">daawat-restaurant.de</a>
         </div>
       </footer>
+      <a href="#top" onClick={scrollToTop} className="daawat-back-to-top" aria-label="Nach oben">
+        ↑
+      </a>
     </div>
   );
 }
