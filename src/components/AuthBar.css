@@ -1,0 +1,83 @@
+.auth-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #edf2f7;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.auth-bar-user {
+  color: #2d3748;
+  margin-right: 0.5rem;
+}
+
+.auth-bar-btn {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  background: #fff;
+  color: #2d3748;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.auth-bar-btn:hover {
+  background: #e2e8f0;
+}
+
+.auth-bar-btn-primary {
+  background: #2d3748;
+  color: #fff;
+  border-color: #2d3748;
+}
+
+.auth-bar-btn-primary:hover {
+  background: #1a202c;
+}
+
+.auth-bar-form {
+  flex-wrap: wrap;
+}
+
+.auth-bar-form form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-bar-form input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.auth-bar-error {
+  color: #c53030;
+  margin: 0;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.auth-bar-form-btns {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.auth-bar-form-btns button {
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.auth-bar-form-btns button[type="submit"] {
+  background: #2d3748;
+  color: #fff;
+  border-color: #2d3748;
+}

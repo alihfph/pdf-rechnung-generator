@@ -1,0 +1,141 @@
+.roster-hours-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  min-height: 100vh;
+}
+
+.roster-hours-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.roster-hours-nav {
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.roster-hours-nav a {
+  color: #3182ce;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.roster-hours-nav a:hover {
+  text-decoration: underline;
+}
+
+.roster-nav-sep {
+  color: #a0aec0;
+  margin: 0 0.25rem;
+}
+
+.roster-hours-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.roster-hours-header p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.roster-hours-controls {
+  margin-bottom: 1.25rem;
+}
+
+.roster-hours-period-label {
+  display: block;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.roster-hours-period-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.roster-hours-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.roster-hours-radio input {
+  margin: 0;
+}
+
+.roster-hours-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.roster-hours-custom input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.roster-hours-custom span {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.roster-hours-table-wrap h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 1rem;
+}
+
+.roster-hours-empty {
+  color: #718096;
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.roster-hours-empty a {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.roster-hours-empty a:hover {
+  text-decoration: underline;
+}
+
+.roster-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.roster-hours-table th,
+.roster-hours-table td {
+  border: 1px solid #e2e8f0;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+}
+
+.roster-hours-table th {
+  background: #edf2f7;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.roster-hours-total {
+  font-weight: 600;
+  color: #2d3748;
+}

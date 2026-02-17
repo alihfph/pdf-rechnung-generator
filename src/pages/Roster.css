@@ -1,0 +1,419 @@
+.roster-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  min-height: 100vh;
+}
+
+.roster-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.roster-nav {
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.roster-nav a {
+  color: #3182ce;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.roster-nav a:hover {
+  text-decoration: underline;
+}
+
+.roster-nav-sep {
+  color: #a0aec0;
+  margin: 0 0.25rem;
+}
+
+.roster-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.roster-header p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.roster-controls {
+  margin-bottom: 1.25rem;
+}
+
+.roster-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.roster-period {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roster-nav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #2d3748;
+}
+
+.roster-nav-btn:hover {
+  background: #edf2f7;
+  border-color: #a0aec0;
+}
+
+.roster-period-title {
+  font-weight: 600;
+  color: #2d3748;
+  min-width: 180px;
+  text-align: center;
+}
+
+.roster-view-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.roster-view-toggle button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #4a5568;
+}
+
+.roster-view-toggle button:hover {
+  background: #f7fafc;
+}
+
+.roster-view-toggle button.active {
+  background: #2d3748;
+  color: #fff;
+}
+
+.roster-add-employee {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.roster-add-employee input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  min-width: 180px;
+}
+
+.roster-shift-palette {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 0.5rem;
+}
+
+.roster-shift-palette-label {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin-right: 0.25rem;
+}
+
+.roster-shift-preset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+  background: #2d3748;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+}
+
+.roster-shift-preset:active {
+  cursor: grabbing;
+}
+
+.roster-shift-preset:hover {
+  background: #1a202c;
+}
+
+.roster-shift-preset-remove {
+  padding: 0;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.roster-shift-preset-remove:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.roster-shift-palette-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid #e2e8f0;
+}
+
+.roster-shift-palette-add input[type="time"] {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.roster-shift-palette-sep {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+.roster-shift-preset-add-btn {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #2d3748;
+  border-radius: 6px;
+  background: #fff;
+  color: #2d3748;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.roster-shift-preset-add-btn:hover {
+  background: #edf2f7;
+  border-color: #1a202c;
+}
+
+.roster-actions {
+  padding-top: 0.5rem;
+}
+
+.roster-table-wrap {
+  overflow: hidden;
+}
+
+.roster-empty {
+  text-align: center;
+  color: #718096;
+  padding: 2rem;
+  margin: 0;
+}
+
+.roster-table-scroll {
+  overflow-x: auto;
+}
+
+.roster-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.roster-table th,
+.roster-table td {
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.5rem;
+  vertical-align: top;
+}
+
+.roster-table th {
+  background: #edf2f7;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.roster-col-name {
+  min-width: 120px;
+  max-width: 160px;
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.roster-table thead .roster-col-name {
+  background: #edf2f7;
+  z-index: 2;
+}
+
+.roster-col-name span {
+  margin-right: 0.35rem;
+}
+
+.roster-remove-emp {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #a0aec0;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.roster-remove-emp:hover {
+  color: #c53030;
+}
+
+.roster-cell {
+  min-width: 100px;
+}
+
+.roster-cell-drag-over {
+  background: #e6fffa !important;
+  outline: 2px dashed #38b2ac;
+  outline-offset: -2px;
+}
+
+.roster-shifts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.roster-shift-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #e6fffa;
+  color: #234e52;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+.roster-shift-remove {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #234e52;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.roster-shift-remove:hover {
+  opacity: 1;
+  color: #c53030;
+}
+
+.roster-add-shift {
+  width: 100%;
+  padding: 0.35rem;
+  border: 1px dashed #cbd5e0;
+  border-radius: 4px;
+  background: #f7fafc;
+  color: #718096;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.roster-add-shift:hover {
+  background: #edf2f7;
+  border-color: #a0aec0;
+  color: #2d3748;
+}
+
+/* Modal */
+.roster-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.roster-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 320px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.roster-modal h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: #1a1a2e;
+}
+
+.roster-modal-date {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.roster-modal-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.roster-modal-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.roster-modal-fields input {
+  padding: 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.roster-modal-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

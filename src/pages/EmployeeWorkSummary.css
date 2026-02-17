@@ -1,0 +1,213 @@
+.employee-work-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  min-height: 100vh;
+}
+
+.employee-work-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.employee-work-nav {
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.employee-work-nav a {
+  color: #3182ce;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.employee-work-nav a:hover {
+  text-decoration: underline;
+}
+
+.employee-work-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.employee-work-header p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.employee-work-controls {
+  margin-bottom: 1.25rem;
+}
+
+.employee-work-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.employee-work-select-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.employee-work-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  min-width: 200px;
+  background: #fff;
+}
+
+.employee-work-period {
+  flex: 1;
+  min-width: 200px;
+}
+
+.employee-work-period-label {
+  display: block;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.employee-work-period-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.employee-work-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.employee-work-radio input {
+  margin: 0;
+}
+
+.employee-work-custom-dates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.employee-work-custom-dates input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.employee-work-custom-dates span {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.employee-work-summary {
+  margin-top: 1rem;
+}
+
+.employee-work-summary-head {
+  margin-bottom: 1.25rem;
+}
+
+.employee-work-summary-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.employee-work-download-btn {
+  flex-shrink: 0;
+}
+
+.employee-work-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.35rem;
+}
+
+.employee-work-stats {
+  font-size: 1rem;
+  color: #4a5568;
+  margin: 0;
+  font-weight: 500;
+}
+
+.employee-work-empty {
+  color: #718096;
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.employee-work-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.employee-work-table th,
+.employee-work-table td {
+  border: 1px solid #e2e8f0;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+}
+
+.employee-work-table th {
+  background: #edf2f7;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.employee-work-table tbody tr:hover {
+  background: #f7fafc;
+}
+
+.employee-work-table tfoot tr {
+  background: #edf2f7;
+  font-weight: 600;
+}
+
+.employee-work-total-label {
+  text-align: right;
+  color: #2d3748;
+}
+
+.employee-work-total-value {
+  color: #1a202c;
+}
+
+.employee-work-hint {
+  color: #718096;
+  margin: 1rem 0 0;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.employee-work-hint a {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.employee-work-hint a:hover {
+  text-decoration: underline;
+}

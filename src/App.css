@@ -1,0 +1,212 @@
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.header p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #2d3748;
+}
+
+.card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 1rem 0 0.5rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1rem;
+}
+
+@media (max-width: 560px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.card label.full {
+  grid-column: 1 / -1;
+}
+
+.card input,
+.card textarea {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.card input:focus,
+.card textarea:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+}
+
+.card textarea {
+  resize: vertical;
+  min-height: 4rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #718096;
+  margin: 0 0 0.75rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.items-table th {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  background: #edf2f7;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.items-table td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.items-table input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.items-table td:last-child {
+  width: 2.5rem;
+  padding-left: 0.25rem;
+}
+
+.btn-remove {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: #fff;
+  color: #718096;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-remove:hover {
+  background: #fed7d7;
+  color: #c53030;
+  border-color: #feb2b2;
+}
+
+.btn-secondary {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  border: 1px dashed #cbd5e0;
+  border-radius: 6px;
+  background: #f7fafc;
+  color: #4a5568;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+
+.btn-secondary:hover {
+  background: #edf2f7;
+  border-color: #a0aec0;
+}
+
+.discount {
+  margin-top: 0.5rem;
+  max-width: 8rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.btn-primary {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #2d3748;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, transform 0.05s;
+}
+
+.btn-primary:hover {
+  background: #1a202c;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}

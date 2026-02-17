@@ -1,0 +1,299 @@
+/* DAAWAT – Restaurant page, inspired by daawat-restaurant.de */
+
+.daawat {
+  min-height: 100vh;
+  background: #faf8f5;
+  color: #2c1810;
+}
+
+/* Nav */
+.daawat-nav {
+  background: #1a0f0a;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.daawat-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.daawat-logo {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #e8b86d;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.daawat-logo:hover {
+  color: #f5d08a;
+}
+
+.daawat-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.daawat-nav-links a {
+  color: #e8dcc8;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.daawat-nav-links a:hover {
+  color: #e8b86d;
+}
+
+/* Hero */
+.daawat-hero {
+  background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 50%, #3d2318 100%);
+  color: #fff;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.daawat-hero h1 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.daawat-tagline {
+  font-size: 1.15rem;
+  color: #e8dcc8;
+  margin: 0 0 0.25rem;
+}
+
+.daawat-sub {
+  font-size: 0.95rem;
+  color: #c4b59a;
+  margin: 0 0 1.5rem;
+}
+
+.daawat-hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.daawat-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.daawat-btn:hover {
+  transform: translateY(-1px);
+}
+
+.daawat-btn-primary {
+  background: #c45c26;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.daawat-btn-primary:hover {
+  background: #d96a2e;
+  box-shadow: 0 4px 12px rgba(196, 92, 38, 0.4);
+}
+
+.daawat-btn-secondary {
+  background: transparent;
+  color: #e8b86d;
+  border: 2px solid #e8b86d;
+}
+
+.daawat-btn-secondary:hover {
+  background: rgba(232, 184, 109, 0.15);
+}
+
+/* Main */
+.daawat-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.daawat-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e8e0d5;
+}
+
+.daawat-section h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c1810;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #c45c26;
+}
+
+.daawat-section p {
+  margin: 0 0 0.75rem;
+  line-height: 1.55;
+  color: #4a3728;
+}
+
+.daawat-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* Offer */
+.daawat-offer {
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.daawat-offer-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #c45c26, #a84a1a);
+  color: #fff;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(196, 92, 38, 0.35);
+}
+
+/* Hours */
+.daawat-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.daawat-hours-block {
+  padding: 0.75rem;
+  background: #faf8f5;
+  border-radius: 8px;
+  border-left: 4px solid #e8b86d;
+}
+
+.daawat-hours-block strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #2c1810;
+}
+
+.daawat-hours-block p {
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+}
+
+/* Zones */
+.daawat-zones p {
+  margin-bottom: 0.5rem;
+}
+
+/* Contact */
+.daawat-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .daawat-contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.daawat-contact-grid strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #2c1810;
+}
+
+.daawat-contact-grid a {
+  color: #c45c26;
+  text-decoration: none;
+}
+
+.daawat-contact-grid a:hover {
+  text-decoration: underline;
+}
+
+.daawat-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e8e0d5;
+}
+
+.daawat-links a {
+  color: #c45c26;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.daawat-links a:hover {
+  text-decoration: underline;
+}
+
+/* Impressum */
+.daawat-impressum {
+  font-size: 0.9rem;
+}
+
+.daawat-impressum p {
+  margin-bottom: 0.35rem;
+}
+
+.daawat-impressum-note {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #6b5b4f;
+}
+
+/* Footer */
+.daawat-footer {
+  background: #1a0f0a;
+  color: #a09080;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.daawat-footer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.daawat-footer a {
+  color: #e8b86d;
+  text-decoration: none;
+}
+
+.daawat-footer a:hover {
+  text-decoration: underline;
+}
