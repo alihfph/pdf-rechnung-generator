@@ -4,6 +4,8 @@ import { RedisModule } from './redis/redis.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RosterModule } from './roster/roster.module';
+import { MenuModule } from './menu/menu.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { RosterModule } from './roster/roster.module';
     UsersModule,
     AuthModule,
     RosterModule,
+    MenuModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}

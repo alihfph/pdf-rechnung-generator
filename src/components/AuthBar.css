@@ -8,6 +8,17 @@
   font-size: 0.9rem;
 }
 
+.auth-bar-link {
+  color: #2d3748;
+  text-decoration: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+}
+
+.auth-bar-link:hover {
+  background: #e2e8f0;
+}
+
 .auth-bar-user {
   color: #2d3748;
   margin-right: 0.5rem;

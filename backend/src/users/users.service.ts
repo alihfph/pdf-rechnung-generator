@@ -57,4 +57,13 @@ export class UsersService {
   async validatePassword(user: User, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.passwordHash);
   }
+
+  /** Create admin user from env (ADMIN_EMAIL, ADMIN_PASSWORD) if not exists. */
+  async ensureAdminUser(email: string, password: string): Promise<void> {
+    if (!email?.trim() || !password) return;
+    const normalized = email.toLowerCase().trim();
+    const existing = await this.findByEmail(normalized);
+    if (existing) return;
+    await this.create(normalized, password);
+  }
 }

@@ -8,6 +8,8 @@ import DaawatRestaurant from './pages/DaawatRestaurant';
 import Roster from './pages/Roster';
 import RosterHours from './pages/RosterHours';
 import EmployeeWorkSummary from './pages/EmployeeWorkSummary';
+import Admin from './pages/Admin';
+import Order from './pages/Order';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/generate-pdf" element={<GeneratePdf />} />
           <Route path="/daawat-restaurant" element={<DaawatRestaurant />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/roster" element={<Roster />} />
           <Route path="/roster/hours" element={<RosterHours />} />
           <Route path="/roster/employee-work" element={<EmployeeWorkSummary />} />

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './AuthBar.css';
 
@@ -28,6 +29,10 @@ export default function AuthBar() {
   if (user) {
     return (
       <div className="auth-bar">
+        <Link to="/order" className="auth-bar-link">Bestellen</Link>
+        {user.role === 'admin' && (
+          <Link to="/admin" className="auth-bar-link">Admin</Link>
+        )}
         <span className="auth-bar-user">{user.email}</span>
         <button type="button" className="auth-bar-btn" onClick={logout}>
           Logout

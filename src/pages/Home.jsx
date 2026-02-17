@@ -16,6 +16,9 @@ export default function Home() {
           <Link to="/daawat-restaurant" className="btn-primary" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', textDecoration: 'none', background: '#c45c26' }}>
             Daawat Restaurant
           </Link>
+          <Link to="/order" className="btn-primary" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', textDecoration: 'none', background: '#059669' }}>
+            Bestellen (Menü)
+          </Link>
         </div>
       </header>
     </div>
