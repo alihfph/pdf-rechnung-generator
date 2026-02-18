@@ -1,4 +1,14 @@
-# React + Vite
+# PDF Rechnung Generator
+
+## Run locally with real backend
+
+1. **Redis** must be running (e.g. `redis-server` or Docker).
+2. **Backend:** `cd backend && npm install && npm run start:dev`
+3. **Frontend:** in project root, ensure `.env` has `VITE_API_URL=http://localhost:3001`, then `npm run dev`
+
+**Or run both in one terminal:** `npm install && npm run dev:all` (starts backend + frontend; requires Redis).
+
+---
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
