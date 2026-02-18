@@ -12,12 +12,18 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       this.config.get<string>('REDIS_URL') ||
       this.config.get<string>('REDIS_PRIVATE_URL') ||
       'redis://localhost:6379';
+    const hasConfiguredUrl = !!(this.config.get<string>('REDIS_URL') || this.config.get<string>('REDIS_PRIVATE_URL'));
+    this.logger.log(hasConfiguredUrl ? 'Redis: REDIS_URL is set' : 'Redis: REDIS_URL not set, using default localhost');
+    const isTls = url.startsWith('rediss://');
     this.client = new Redis(url, {
-      maxRetriesPerRequest: 3,
-      retryStrategy: (times) => (times <= 3 ? 1000 : null),
+      maxRetriesPerRequest: 5,
+      retryStrategy: (times) => (times <= 5 ? 2000 : null),
       lazyConnect: true,
+      ...(isTls && { tls: { rejectUnauthorized: false } }),
     });
-    this.client.on('error', (err) => this.logger.error(`Redis error: ${err.message}`));
+    this.client.on('error', (err: any) =>
+      this.logger.warn(`Redis: ${err?.message || err?.code || 'connection problem'}`),
+    );
     this.client.on('connect', () => this.logger.log('Redis connected'));
   }
 
@@ -26,7 +32,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       await this.client.ping();
     } catch (err: any) {
       this.logger.error(
-        `Redis connection failed. In Railway: add a Redis service, then in your backend service Variables set REDIS_URL (or REDIS_PRIVATE_URL) to the Redis connection URL. Error: ${err?.message || err}`,
+        `Redis connection failed. Set REDIS_URL (or REDIS_PRIVATE_URL) in your backend service to the exact URL from the Redis service (Variables tab). Use the private/internal URL if available. Error: ${err?.message || err}`,
       );
       throw err;
     }

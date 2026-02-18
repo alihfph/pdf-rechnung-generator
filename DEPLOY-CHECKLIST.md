@@ -14,9 +14,18 @@ In your **Railway project** → select the **backend service** (not Redis) → *
 | `ADMIN_EMAIL`   | `partap.singh@example.com` |
 | `ADMIN_PASSWORD`| `Germany1234` |
 
-- **`REDIS_URL`** (required): If you added a **Redis** service in the same Railway project, open the **Redis** service → **Variables** (or **Connect** tab) → copy **`REDIS_URL`** or **`REDIS_PRIVATE_URL`**, then in the **backend** service → **Variables** → add `REDIS_URL` = that value.  
-  If you don’t have Redis in the project: **+ New** → **Database** → **Redis**, then link/copy its URL into the backend’s `REDIS_URL`.  
-  **If `REDIS_URL` is missing or wrong you get `ECONNREFUSED` / ioredis errors.**
+- **`REDIS_URL`** (required – without this you get "Redis error" / "Connection is closed"):  
+  **Option A – Reference (recommended):**  
+  1. Open your **backend** service → **Variables**.  
+  2. Click **Add variable** → **Add Reference** (or **Reference Variable**).  
+  3. Select the **Redis** service, then the variable **`REDIS_PRIVATE_URL`** (or `REDIS_URL`).  
+  4. Expose it as **`REDIS_URL`** in the backend (so the backend sees `REDIS_URL` = Redis’s private URL).  
+  5. Redeploy the backend.  
+  **Option B – Copy-paste:**  
+  1. Open the **Redis** service → **Variables** → copy the full value of **`REDIS_PRIVATE_URL`** (or `REDIS_URL`).  
+  2. Open the **backend** service → **Variables** → **New Variable** → Name: **`REDIS_URL`**, Value: paste the URL.  
+  3. Redeploy the backend.  
+  If you still see "Connection is closed", the backend is not getting a valid Redis URL — use Option A so the value is always correct.
 
 ---
 
