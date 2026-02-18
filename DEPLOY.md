@@ -145,11 +145,53 @@ jobs:
 
 ---
 
-### If you use the backend later
+## 5. Deploy the backend for free
 
-The NestJS API (Redis, JWT) is not included in the free frontend hosts above. To run it for free you can use:
+The backend (NestJS + Redis) is in the `backend/` folder. You need **Node** + **Redis**. Two free options:
 
-- **Railway** – https://railway.app (free tier; add Redis from their catalog).
-- **Render** – https://render.com (free tier for web service; separate free Redis add-on).
+---
 
-Set `VITE_API_URL` in your frontend build to your backend URL (e.g. `https://your-app.railway.app`).
+### Option A: Railway (recommended)
+
+1. Go to **https://railway.app** and sign in with GitHub.
+2. **New Project** → **Deploy from GitHub repo** → select **alihfph/pdf-rechnung-generator**.
+3. Railway will deploy the **root** of the repo. You need to deploy the **backend** only:
+   - After the first deploy, go to the service → **Settings** → **Root Directory** → set to `backend` → **Deploy** again (or add a new service and set Root Directory to `backend`).
+4. Add **Redis**: in the project, click **+ New** → **Database** → **Redis**. Railway creates a Redis instance and exposes `REDIS_URL` (often auto-linked).
+5. Set **environment variables** for the backend service:
+   - `REDIS_URL` – usually auto-set if you added Redis in the same project; otherwise copy from the Redis service’s **Variables** tab (e.g. `redis://default:xxx@xxx.railway.app:port`).
+   - `JWT_SECRET` – any long random string (e.g. `openssl rand -hex 32`).
+   - `ADMIN_EMAIL` – e.g. `partap.singh@example.com`.
+   - `ADMIN_PASSWORD` – e.g. `Germany1234`.
+6. Set **port**: Railway provides `PORT`; NestJS already uses `process.env.PORT || 3001`, so no change needed.
+7. **Settings** → **Networking** → **Generate Domain** to get a public URL like `https://xxx.up.railway.app`.
+8. Copy that URL. In **Vercel** → your frontend project → **Settings** → **Environment Variables** → add `VITE_API_URL` = `https://xxx.up.railway.app` → **Redeploy** the frontend.
+
+---
+
+### Option B: Render
+
+1. Go to **https://render.com** and sign in with GitHub.
+2. **New** → **Web Service** → connect **alihfph/pdf-rechnung-generator**.
+3. **Root Directory**: `backend`.
+4. **Build command:** `npm install && npm run build`
+5. **Start command:** `npm run start:prod` (or `node dist/main`).
+6. **Instance type:** Free.
+7. Add **Redis**: **New** → **Redis** (free tier). Copy the **Internal Redis URL** (or External if you use it from outside Render).
+8. In the Web Service → **Environment**:
+   - `REDIS_URL` = the Redis URL from step 7.
+   - `JWT_SECRET` = long random string.
+   - `ADMIN_EMAIL` and `ADMIN_PASSWORD` if you use the bootstrap admin.
+9. Deploy. Render gives a URL like `https://your-service.onrender.com`.
+10. In **Vercel**, set `VITE_API_URL` to that URL and redeploy the frontend.
+
+**Note:** On the free tier, Render may spin down after inactivity; the first request after a while can be slow.
+
+---
+
+### After the backend is live
+
+- Open your frontend (e.g. https://pdf-rechnung-generator-ali.vercel.app).
+- Ensure `VITE_API_URL` in Vercel points to the backend URL (no trailing slash).
+- Redeploy the frontend so the build includes the correct `VITE_API_URL`.
+- The **Order** and **Admin** pages will then use the deployed API.
