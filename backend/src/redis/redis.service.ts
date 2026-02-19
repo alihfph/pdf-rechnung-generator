@@ -28,13 +28,28 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit() {
-    try {
-      await this.client.ping();
-    } catch (err: any) {
-      this.logger.error(
-        `Redis connection failed. Set REDIS_URL (or REDIS_PRIVATE_URL) in your backend service to the exact URL from the Redis service (Variables tab). Use the private/internal URL if available. Error: ${err?.message || err}`,
-      );
-      throw err;
+    const maxAttempts = 5;
+    const delayMs = 3000;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        this.logger.log(`Redis connect attempt ${attempt}/${maxAttempts}...`);
+        await this.client.ping();
+        this.logger.log('Redis ready.');
+        return;
+      } catch (err: any) {
+        const msg = err?.message || String(err);
+        this.logger.warn(`Attempt ${attempt} failed: ${msg}`);
+        if (attempt === maxAttempts) {
+          const hasUrl = !!(this.config.get<string>('REDIS_URL') || this.config.get<string>('REDIS_PRIVATE_URL'));
+          this.logger.error(
+            hasUrl
+              ? `Redis connection failed after ${maxAttempts} attempts. Check that REDIS_URL is the correct URL from your Redis provider (Railway Redis or Upstash). Error: ${msg}`
+              : `REDIS_URL is not set. In Railway → Backend service → Variables → add REDIS_URL with the Redis URL (from Railway Redis Variables tab, or from https://console.upstash.com). Then redeploy.`,
+          );
+          throw err;
+        }
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
     }
   }
 
@@ -52,6 +67,11 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
   async del(key: string): Promise<void> {
     await this.client.del(key);
+  }
+
+  /** Return keys matching pattern (e.g. 'user:*'). */
+  async keys(pattern: string): Promise<string[]> {
+    return this.client.keys(pattern);
   }
 
   onModuleDestroy() {

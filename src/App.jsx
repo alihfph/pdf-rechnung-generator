@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import AuthBar from './components/AuthBar';
+import AdminRoute from './components/AdminRoute';
 import './App.css';
 import Home from './pages/Home';
 import GeneratePdf from './pages/GeneratePdf';
@@ -10,6 +11,7 @@ import RosterHours from './pages/RosterHours';
 import EmployeeWorkSummary from './pages/EmployeeWorkSummary';
 import Admin from './pages/Admin';
 import Order from './pages/Order';
+import ManageAdmins from './pages/ManageAdmins';
 
 function App() {
   return (
@@ -18,13 +20,14 @@ function App() {
         <AuthBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/generate-pdf" element={<GeneratePdf />} />
           <Route path="/daawat-restaurant" element={<DaawatRestaurant />} />
           <Route path="/order" element={<Order />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/roster" element={<Roster />} />
-          <Route path="/roster/hours" element={<RosterHours />} />
-          <Route path="/roster/employee-work" element={<EmployeeWorkSummary />} />
+          <Route path="/generate-pdf" element={<AdminRoute><GeneratePdf /></AdminRoute>} />
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+          <Route path="/admin/admins" element={<ManageAdmins />} />
+          <Route path="/roster" element={<AdminRoute><Roster /></AdminRoute>} />
+          <Route path="/roster/hours" element={<AdminRoute><RosterHours /></AdminRoute>} />
+          <Route path="/roster/employee-work" element={<AdminRoute><EmployeeWorkSummary /></AdminRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

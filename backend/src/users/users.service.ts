@@ -8,6 +8,7 @@ export interface User {
   email: string;
   passwordHash: string;
   createdAt: string;
+  role?: 'admin' | 'customer';
 }
 
 const USER_PREFIX = 'user:';
@@ -35,7 +36,11 @@ export class UsersService {
     return this.findByEmail(email);
   }
 
-  async create(email: string, password: string): Promise<{ id: string; email: string }> {
+  async create(
+    email: string,
+    password: string,
+    role: 'admin' | 'customer' = 'customer',
+  ): Promise<{ id: string; email: string; role: 'admin' | 'customer' }> {
     const normalized = email.toLowerCase().trim();
     const existing = await this.findByEmail(normalized);
     if (existing) {
@@ -48,10 +53,11 @@ export class UsersService {
       email: normalized,
       passwordHash,
       createdAt: new Date().toISOString(),
+      role,
     };
     await this.redis.set(this.userKey(normalized), JSON.stringify(user));
     await this.redis.set(`${EMAIL_TO_ID_PREFIX}${id}`, normalized);
-    return { id, email: normalized };
+    return { id, email: normalized, role };
   }
 
   async validatePassword(user: User, password: string): Promise<boolean> {
@@ -63,7 +69,34 @@ export class UsersService {
     if (!email?.trim() || !password) return;
     const normalized = email.toLowerCase().trim();
     const existing = await this.findByEmail(normalized);
-    if (existing) return;
-    await this.create(normalized, password);
+    if (existing) {
+      if (existing.role !== 'admin') {
+        existing.role = 'admin';
+        await this.redis.set(this.userKey(normalized), JSON.stringify(existing));
+      }
+      return;
+    }
+    await this.create(normalized, password, 'admin');
+  }
+
+  /** List all admin users (id, email, createdAt). Admin only. */
+  async listAdmins(): Promise<{ id: string; email: string; createdAt: string }[]> {
+    const keys = await this.redis.keys(`${USER_PREFIX}*`);
+    const admins: { id: string; email: string; createdAt: string }[] = [];
+    for (const key of keys) {
+      const raw = await this.redis.get(key);
+      if (!raw) continue;
+      const user = JSON.parse(raw) as User;
+      if (user.role === 'admin') {
+        admins.push({ id: user.id, email: user.email, createdAt: user.createdAt });
+      }
+    }
+    return admins.sort((a, b) => a.email.localeCompare(b.email));
+  }
+
+  /** Create a new admin user. Caller must be admin. */
+  async createAdmin(email: string, password: string): Promise<{ id: string; email: string }> {
+    const result = await this.create(email, password, 'admin');
+    return { id: result.id, email: result.email };
   }
 }

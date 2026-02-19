@@ -29,6 +29,20 @@ In your **Railway project** → select the **backend service** (not Redis) → *
 
 ---
 
+### Still "Connection is closed"? Use Upstash Redis (free)
+
+If Railway’s Redis keeps failing, use **Upstash** (free tier) and point the backend at it:
+
+1. Go to **https://console.upstash.com** → sign up / log in.
+2. **Create database** → pick a region → **Free** plan → Create.
+3. On the database page, open **Redis Connect** / **Connect** and copy the **Redis URL** (looks like `rediss://default:xxxxx@xxx.upstash.io:6379`).
+4. In **Railway** → your **backend** service → **Variables** → set **`REDIS_URL`** = that Upstash URL (paste the full string).
+5. **Redeploy** the backend.
+
+The backend supports `rediss://` (TLS). Upstash works from anywhere, so the backend on Railway will connect without needing Railway’s own Redis.
+
+---
+
 ## 2. Railway – Public URL
 
 - Backend service → **Settings** → **Networking** → **Generate Domain**.
@@ -51,3 +65,9 @@ In your **Railway project** → select the **backend service** (not Redis) → *
 ---
 
 After redeploy, the Order page will use the backend. Log in with `partap.singh@example.com` / `Germany1234` for admin.
+
+---
+
+## 502 / "connection refused" on Railway?
+
+If the frontend gets **502** or **connection refused** when calling the backend (e.g. on login), the **backend process is not running**. It usually crashes on startup because **Redis fails to connect** (see Redis errors in the backend logs). Fix: set **REDIS_URL** correctly (e.g. with Upstash – see “Still Connection is closed? Use Upstash Redis” above), then **redeploy** the backend. Once the backend starts and listens, OPTIONS and POST requests will succeed.

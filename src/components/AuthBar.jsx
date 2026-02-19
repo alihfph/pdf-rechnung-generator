@@ -26,12 +26,22 @@ export default function AuthBar() {
     }
   };
 
+  const isAdmin = user?.role === 'admin';
+
   if (user) {
     return (
       <div className="auth-bar">
-        <Link to="/order" className="auth-bar-link">Bestellen</Link>
-        {user.role === 'admin' && (
-          <Link to="/admin" className="auth-bar-link">Admin</Link>
+        <Link to="/daawat-restaurant" className="auth-bar-link">Restaurant</Link>
+        {isAdmin && (
+          <>
+            <Link to="/roster" className="auth-bar-link">Dienstplan</Link>
+            <Link to="/generate-pdf" className="auth-bar-link">PDF Generator</Link>
+            <Link to="/admin" className="auth-bar-link">Bestellen (Admin)</Link>
+            <Link to="/admin/admins" className="auth-bar-link">Admins</Link>
+          </>
+        )}
+        {!isAdmin && (
+          <Link to="/order" className="auth-bar-link">Bestellen</Link>
         )}
         <span className="auth-bar-user">{user.email}</span>
         <button type="button" className="auth-bar-btn" onClick={logout}>
@@ -74,6 +84,8 @@ export default function AuthBar() {
 
   return (
     <div className="auth-bar">
+      <Link to="/daawat-restaurant" className="auth-bar-link">Daawat Restaurant</Link>
+      <Link to="/order" className="auth-bar-link">Bestellen</Link>
       <button type="button" className="auth-bar-btn" onClick={() => setShowForm('login')}>
         Login
       </button>

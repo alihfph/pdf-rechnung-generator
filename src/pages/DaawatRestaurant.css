@@ -274,9 +274,586 @@ html {
 /* ----- Main ----- */
 .daawat-main {
   position: relative;
-  max-width: var(--d-max);
   margin: 0 auto;
   padding: 3rem var(--d-gutter) 4rem;
+}
+
+.daawat-main-two-col {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 380px);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .daawat-main-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.daawat-main-col--menu { position: sticky; top: 6rem; min-width: 0; }
+.daawat-main-col--basket { position: sticky; top: 6rem; min-width: 0; }
+
+.daawat-main-content {
+  max-width: var(--d-max);
+  margin: 0 auto;
+}
+
+/* ----- Basket (left column, like image) ----- */
+.daawat-basket {
+  background: var(--d-color-surface);
+  border-radius: var(--d-radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--d-shadow);
+  border: 1px solid var(--d-color-border);
+}
+
+.daawat-basket-title {
+  font-family: var(--d-font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--d-color-text);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.daawat-basket-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.daawat-basket-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid var(--d-color-border);
+  border-radius: var(--d-radius);
+  background: #f5f3f0;
+  color: var(--d-color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--d-transition), border-color var(--d-transition);
+}
+
+.daawat-basket-tab--active {
+  background: #ede9e3;
+  border-color: var(--d-color-accent);
+  color: var(--d-color-text);
+}
+
+.daawat-basket-tab-icon {
+  font-size: 1.25rem;
+}
+
+.daawat-basket-tab-time {
+  font-size: 0.75rem;
+  color: var(--d-color-text-muted);
+}
+
+.daawat-basket-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.daawat-basket-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+
+.daawat-basket-empty-title {
+  font-weight: 600;
+  color: var(--d-color-text);
+  margin: 0 0 0.25rem;
+}
+
+.daawat-basket-empty-sub {
+  font-size: 0.9rem;
+  color: var(--d-color-text-muted);
+  margin: 0;
+}
+
+.daawat-basket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.daawat-basket-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--d-color-border);
+  font-size: 0.9rem;
+}
+
+.daawat-basket-item-name { flex: 1; min-width: 0; }
+.daawat-basket-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.daawat-basket-item-qty button {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--d-color-border);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.daawat-basket-item-price { font-weight: 500; white-space: nowrap; }
+
+.daawat-basket-total {
+  margin: 0.75rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--d-color-border);
+}
+
+.daawat-basket-guest-email {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--d-color-border);
+  border-radius: var(--d-radius);
+  font-size: 0.9rem;
+}
+
+.daawat-basket-error { color: #b91c1c; font-size: 0.85rem; margin: 0.5rem 0 0; }
+.daawat-basket-success { color: #15803d; font-size: 0.9rem; margin: 0.5rem 0 0; }
+
+.daawat-basket-btn {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--d-color-text);
+  color: var(--d-color-surface);
+  border: none;
+  border-radius: var(--d-radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.daawat-basket-btn:hover:not(:disabled) { background: #444; }
+.daawat-basket-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* ----- Menu (center column) ----- */
+.daawat-menu {
+  background: var(--d-color-surface);
+  border-radius: var(--d-radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--d-shadow);
+  border: 1px solid var(--d-color-border);
+}
+
+.daawat-menu-title {
+  font-family: var(--d-font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--d-color-text);
+  margin: 0 0 1rem;
+}
+
+.daawat-menu-loading,
+.daawat-menu-empty {
+  color: var(--d-color-text-muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.daawat-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.daawat-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--d-color-border);
+}
+
+.daawat-menu-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.daawat-menu-item-name { font-weight: 500; color: var(--d-color-text); }
+.daawat-menu-item-desc { font-size: 0.8rem; color: var(--d-color-text-muted); }
+.daawat-menu-item-price { font-size: 0.9rem; color: var(--d-color-accent); }
+
+.daawat-menu-item-add {
+  flex-shrink: 0;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--d-color-accent);
+  border-radius: var(--d-radius);
+  background: transparent;
+  color: var(--d-color-accent);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.daawat-menu-item-add:hover { background: var(--d-color-gold-soft); }
+
+/* ----- Mobile: menu cards (just food) ----- */
+.daawat-menu-list--cards .daawat-menu-item {
+  border-bottom: none;
+  padding: 0;
+}
+
+.daawat-menu-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--d-color-surface);
+  border-radius: var(--d-radius);
+  border: 1px solid var(--d-color-border);
+  cursor: pointer;
+  transition: box-shadow var(--d-transition);
+}
+
+.daawat-menu-card:hover {
+  box-shadow: var(--d-shadow-lg);
+}
+
+.daawat-menu-card-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.daawat-menu-card-text .daawat-menu-item-name {
+  font-size: 1rem;
+}
+
+.daawat-menu-card-text .daawat-menu-item-desc {
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.daawat-menu-card-image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.daawat-menu-card-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--d-color-border);
+}
+
+.daawat-menu-card-add {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: var(--d-color-accent);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  z-index: 2;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.daawat-menu-card-add:hover,
+.daawat-menu-card-add:active {
+  background: #fef3c7;
+}
+
+.daawat-menu-card-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: var(--d-color-accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- Item detail modal (on select) ----- */
+.daawat-item-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-overlay {
+    align-items: center;
+    padding: 1rem;
+  }
+}
+
+.daawat-item-detail {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  max-height: 85dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--d-color-surface);
+  border-radius: var(--d-radius-lg) var(--d-radius-lg) 0 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail {
+    border-radius: var(--d-radius-lg);
+    max-height: 85vh;
+  }
+}
+
+.daawat-item-detail-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--d-color-text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daawat-item-detail-image {
+  width: 100%;
+  height: 120px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--d-color-border);
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-image {
+    height: 200px;
+  }
+}
+
+.daawat-item-detail-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.75rem 1rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-body {
+    padding: 1.25rem 1.25rem 0;
+  }
+}
+
+.daawat-item-detail-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--d-color-text);
+  margin: 0 0 0.35rem;
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-name {
+    font-size: 1.35rem;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.daawat-item-detail-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--d-color-text);
+  margin: 0 0 0.35rem;
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-price {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.daawat-item-detail-desc {
+  font-size: 0.9rem;
+  color: var(--d-color-text-muted);
+  margin: 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-desc {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    font-size: 0.95rem;
+  }
+}
+
+.daawat-item-detail-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 1rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  background: #f5f3f0;
+  border-radius: 0 0 var(--d-radius-lg) var(--d-radius-lg);
+}
+
+@media (min-width: 769px) {
+  .daawat-item-detail-footer {
+    padding: 1rem 1.25rem 1.5rem;
+    gap: 1rem;
+  }
+}
+
+.daawat-item-detail-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: #fff;
+  border: 1px solid var(--d-color-border);
+  border-radius: var(--d-radius);
+}
+
+.daawat-item-detail-qty button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--d-color-text);
+}
+
+.daawat-item-detail-qty span {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.daawat-item-detail-add {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--d-radius);
+  background: var(--d-color-accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.daawat-item-detail-add:hover {
+  background: var(--d-color-accent-hover);
+}
+
+/* ----- Mobile: View basket bar ----- */
+.daawat-view-basket-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--d-color-accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.daawat-view-basket-bar:hover {
+  color: #fff;
+  background: var(--d-color-accent-hover);
+}
+
+.daawat-view-basket-icon {
+  font-size: 1.25rem;
+}
+
+.daawat-view-basket-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daawat-view-basket-total {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.daawat-main--has-basket-bar {
+  padding-bottom: 4rem;
 }
 
 .daawat-section {

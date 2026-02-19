@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsString, Min, ValidateNested } from 'class-validator';
+import { IsArray, IsEmail, IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class OrderItemDto {
@@ -22,4 +22,9 @@ export class CreateOrderDto {
   @ValidateNested({ each: true })
   @Type(() => OrderItemDto)
   items: OrderItemDto[];
+
+  /** For guest checkout: contact email (required when not logged in). */
+  @IsOptional()
+  @IsEmail()
+  guestEmail?: string;
 }

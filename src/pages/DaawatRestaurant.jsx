@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
+import { getApiUrl, apiFetch } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 import './DaawatRestaurant.css';
 
 const DAAWAT_URL = 'https://www.daawat-restaurant.de/';
@@ -46,7 +49,93 @@ function WhatsAppReview({ paragraphs, author }) {
   );
 }
 
+const MENU_ITEM_IMAGE = 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80';
+
 export default function DaawatRestaurant() {
+  const { user } = useAuth();
+  const [menu, setMenu] = useState([]);
+  const [menuLoading, setMenuLoading] = useState(false);
+  const [cart, setCart] = useState([]);
+  const [deliveryType, setDeliveryType] = useState('delivery');
+  const [orderError, setOrderError] = useState('');
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [guestEmail, setGuestEmail] = useState('');
+  const [placing, setPlacing] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [detailQty, setDetailQty] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+  const isBackendConfigured = !!getApiUrl();
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!isBackendConfigured) return;
+    setMenuLoading(true);
+    apiFetch('/menu').then(setMenu).catch(() => setMenu([])).finally(() => setMenuLoading(false));
+  }, [isBackendConfigured]);
+
+  const addToCart = (item, qty = 1) => {
+    const existing = cart.find((c) => c.menuId === item.id);
+    if (existing) {
+      setCart(cart.map((c) => (c.menuId === item.id ? { ...c, quantity: c.quantity + qty } : c)));
+    } else {
+      setCart([...cart, { menuId: item.id, name: item.name, price: item.price, quantity: qty }]);
+    }
+  };
+
+  const openItemDetail = (item) => {
+    setSelectedItem(item);
+    setDetailQty(1);
+  };
+
+  const handleAddFromDetail = () => {
+    if (!selectedItem) return;
+    addToCart(selectedItem, detailQty);
+    setSelectedItem(null);
+  };
+
+  const cartCount = cart.reduce((n, i) => n + i.quantity, 0);
+
+  const updateQty = (menuId, delta) => {
+    setCart(cart.map((c) => (c.menuId === menuId ? { ...c, quantity: c.quantity + delta } : c)).filter((c) => c.quantity > 0));
+  };
+
+  const cartTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    if (cart.length === 0) return;
+    const email = user?.email || guestEmail?.trim();
+    if (!email) {
+      setOrderError('Bitte E-Mail angeben (Gast) oder einloggen.');
+      return;
+    }
+    setOrderError('');
+    setOrderSuccess(false);
+    setPlacing(true);
+    try {
+      await apiFetch('/orders', {
+        method: 'POST',
+        body: JSON.stringify({
+          items: cart.map((i) => ({ menuId: i.menuId, name: i.name, price: i.price, quantity: i.quantity })),
+          ...(user ? {} : { guestEmail: email }),
+        }),
+      });
+      setCart([]);
+      setOrderSuccess(true);
+    } catch (err) {
+      setOrderError(err?.message || 'Bestellung fehlgeschlagen');
+    } finally {
+      setPlacing(false);
+    }
+  };
+
   const scrollToTop = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -93,7 +182,189 @@ export default function DaawatRestaurant() {
         </div>
       </header>
 
-      <main className="daawat-main">
+      <main className={`daawat-main ${isBackendConfigured && isMobile && cartCount > 0 ? 'daawat-main--has-basket-bar' : ''}`}>
+        {isBackendConfigured && (
+          <div className="daawat-main-two-col">
+            <div className="daawat-main-col daawat-main-col--menu">
+              <div className="daawat-menu">
+                <h2 className="daawat-menu-title">Menü</h2>
+                {menuLoading ? (
+                  <p className="daawat-menu-loading">Lade Menü…</p>
+                ) : menu.length === 0 ? (
+                  <p className="daawat-menu-empty">Noch keine Gerichte im Menü.</p>
+                ) : (
+                  <ul className={`daawat-menu-list ${isMobile ? 'daawat-menu-list--cards' : ''}`}>
+                    {menu.map((item) => {
+                      const inCart = cart.find((c) => c.menuId === item.id);
+                      return (
+                        <li key={item.id} className="daawat-menu-item">
+                          {isMobile ? (
+                            <div
+                              className="daawat-menu-card"
+                              onClick={() => openItemDetail(item)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => e.key === 'Enter' && openItemDetail(item)}
+                              aria-label={`${item.name}, ${item.price.toFixed(2)} €`}
+                            >
+                              <div className="daawat-menu-card-text">
+                                <span className="daawat-menu-item-name">{item.name}</span>
+                                {item.description && (
+                                  <span className="daawat-menu-item-desc">{item.description}</span>
+                                )}
+                                <span className="daawat-menu-item-price">{item.price.toFixed(2)} €</span>
+                              </div>
+                              <div className="daawat-menu-card-image-wrap">
+                                <div
+                                  className="daawat-menu-card-image"
+                                  style={{ backgroundImage: `url(${item.imageUrl || MENU_ITEM_IMAGE})` }}
+                                />
+                                {inCart ? (
+                                  <span className="daawat-menu-card-badge">{inCart.quantity}</span>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    className="daawat-menu-card-add"
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); openItemDetail(item); }}
+                                    onPointerDown={(e) => { e.stopPropagation(); openItemDetail(item); }}
+                                    aria-label="Hinzufügen"
+                                  >
+                                    +
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div
+                                className="daawat-menu-item-info"
+                                onClick={() => openItemDetail(item)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => e.key === 'Enter' && openItemDetail(item)}
+                              >
+                                <span className="daawat-menu-item-name">{item.name}</span>
+                                {item.description && <span className="daawat-menu-item-desc">{item.description}</span>}
+                                <span className="daawat-menu-item-price">{item.price.toFixed(2)} €</span>
+                              </div>
+                              <button type="button" className="daawat-menu-item-add" onClick={() => addToCart(item)}>
+                                + Hinzufügen
+                              </button>
+                            </>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            </div>
+            <div id="daawat-basket" className="daawat-main-col daawat-main-col--basket">
+              <div className="daawat-basket">
+                <h2 className="daawat-basket-title">Warenkorb</h2>
+                <div className="daawat-basket-tabs">
+                  <button
+                    type="button"
+                    className={`daawat-basket-tab ${deliveryType === 'delivery' ? 'daawat-basket-tab--active' : ''}`}
+                    onClick={() => setDeliveryType('delivery')}
+                  >
+                    <span className="daawat-basket-tab-icon" aria-hidden>🚴</span>
+                    <span>Lieferung</span>
+                    <span className="daawat-basket-tab-time">25–40 Min.</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`daawat-basket-tab ${deliveryType === 'collection' ? 'daawat-basket-tab--active' : ''}`}
+                    onClick={() => setDeliveryType('collection')}
+                  >
+                    <span className="daawat-basket-tab-icon" aria-hidden>📦</span>
+                    <span>Abholung</span>
+                    <span className="daawat-basket-tab-time">15 Min.</span>
+                  </button>
+                </div>
+                {cart.length === 0 ? (
+                  <div className="daawat-basket-empty">
+                    <div className="daawat-basket-empty-icon" aria-hidden>🛒</div>
+                    <p className="daawat-basket-empty-title">Warenkorb füllen</p>
+                    <p className="daawat-basket-empty-sub">Ihr Warenkorb ist leer</p>
+                  </div>
+                ) : (
+                  <div className="daawat-basket-list">
+                    {cart.map((i) => (
+                      <div key={i.menuId} className="daawat-basket-item">
+                        <span className="daawat-basket-item-name">{i.name}</span>
+                        <span className="daawat-basket-item-qty">
+                          <button type="button" onClick={() => updateQty(i.menuId, -1)} aria-label="Weniger">−</button>
+                          <span>{i.quantity}</span>
+                          <button type="button" onClick={() => updateQty(i.menuId, 1)} aria-label="Mehr">+</button>
+                        </span>
+                        <span className="daawat-basket-item-price">{(i.price * i.quantity).toFixed(2)} €</span>
+                      </div>
+                    ))}
+                    <p className="daawat-basket-total">Gesamt: <strong>{cartTotal.toFixed(2)} €</strong></p>
+                    {!user && (
+                      <input
+                        type="email"
+                        className="daawat-basket-guest-email"
+                        placeholder="Ihre E-Mail (Gast)"
+                        value={guestEmail}
+                        onChange={(e) => setGuestEmail(e.target.value)}
+                      />
+                    )}
+                    {orderError && <p className="daawat-basket-error">{orderError}</p>}
+                    {orderSuccess && <p className="daawat-basket-success">Bestellung aufgegeben.</p>}
+                    <button type="button" className="daawat-basket-btn" onClick={handlePlaceOrder} disabled={placing}>
+                      {placing ? 'Wird gesendet…' : 'Bestellung aufgeben'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedItem && createPortal(
+          <div className="daawat-item-detail-overlay" onClick={() => setSelectedItem(null)} role="dialog" aria-modal="true" aria-label="Gerichtdetails">
+            <div className="daawat-item-detail" onClick={(e) => e.stopPropagation()}>
+              <button type="button" className="daawat-item-detail-close" onClick={() => setSelectedItem(null)} aria-label="Schließen">
+                ×
+              </button>
+              <div
+                className="daawat-item-detail-image"
+                style={{ backgroundImage: `url(${selectedItem.imageUrl || MENU_ITEM_IMAGE})` }}
+              />
+              <div className="daawat-item-detail-body">
+                <h3 className="daawat-item-detail-name">{selectedItem.name}</h3>
+                <p className="daawat-item-detail-price">{selectedItem.price.toFixed(2)} €</p>
+                {selectedItem.description && (
+                  <p className="daawat-item-detail-desc">{selectedItem.description}</p>
+                )}
+              </div>
+              <div className="daawat-item-detail-footer">
+                <div className="daawat-item-detail-qty">
+                  <button type="button" onClick={() => setDetailQty((q) => Math.max(1, q - 1))} aria-label="Weniger">−</button>
+                  <span>{detailQty}</span>
+                  <button type="button" onClick={() => setDetailQty((q) => q + 1)} aria-label="Mehr">+</button>
+                </div>
+                <button type="button" className="daawat-item-detail-add" onClick={handleAddFromDetail}>
+                  Hinzufügen {(selectedItem.price * detailQty).toFixed(2)} €
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {isBackendConfigured && isMobile && cartCount > 0 && (
+          <a href="#daawat-basket" className="daawat-view-basket-bar">
+            <span className="daawat-view-basket-icon">🛒</span>
+            <span className="daawat-view-basket-count">{cartCount}</span>
+            <span>Warenkorb anzeigen</span>
+            <span className="daawat-view-basket-total">{cartTotal.toFixed(2)} €</span>
+          </a>
+        )}
+
+        <div className="daawat-main-content">
         <section id="angebote" className="daawat-section daawat-section--highlight">
           <span className="daawat-section-label">Angebot</span>
           <h2 className="daawat-section-title">15 % Rabatt auf Ihre Bestellung</h2>
@@ -136,7 +407,7 @@ export default function DaawatRestaurant() {
         </section>
 
         <section id="oeffnungszeiten" className="daawat-section">
-          <span className="daawat-section-label">Zeiten</span>
+          <span className="daawat-section-label">Öffnungszeiten</span>
           <h2 className="daawat-section-title">Öffnungszeiten</h2>
           <div className="daawat-hours">
             <div className="daawat-hours-card">
@@ -161,7 +432,7 @@ export default function DaawatRestaurant() {
           <span className="daawat-section-label">Lieferung</span>
           <h2 className="daawat-section-title">Essenslieferung in München</h2>
           <p className="daawat-section-desc">
-            Sie suchen einen Lieferservice für indisches Essen in München? Bei DAAWAT bestellen Sie einfach „Lieferung“ – 
+            Sie suchen einen Lieferservice für indisches Essen in München? Bei DAAWAT bestellen Sie einfach „Lieferung“ –
             wir liefern Ihnen unsere Gerichte bequem nach Hause.
           </p>
         </section>
@@ -230,6 +501,7 @@ export default function DaawatRestaurant() {
             <p className="daawat-impressum-source">Quelle: e-recht24.de</p>
           </div>
         </section>
+        </div>
       </main>
 
       <footer className="daawat-footer">

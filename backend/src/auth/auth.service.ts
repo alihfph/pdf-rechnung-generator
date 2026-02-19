@@ -17,8 +17,8 @@ export class AuthService {
   }
 
   async register(email: string, password: string) {
-    const user = await this.users.create(email, password);
-    const role = this.roleForEmail(user.email);
+    const user = await this.users.create(email, password, 'customer');
+    const role = user.role ?? this.roleForEmail(user.email);
     const token = this.jwt.sign({ sub: user.id, email: user.email, role });
     return { user: { id: user.id, email: user.email, role }, access_token: token };
   }
@@ -28,7 +28,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Invalid email or password');
     const valid = await this.users.validatePassword(user, password);
     if (!valid) throw new UnauthorizedException('Invalid email or password');
-    const role = this.roleForEmail(user.email);
+    const role = user.role ?? this.roleForEmail(user.email);
     const token = this.jwt.sign({ sub: user.id, email: user.email, role });
     return { user: { id: user.id, email: user.email, role }, access_token: token };
   }
